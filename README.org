@@ -1,0 +1,3 @@
+#+TITLE: Takoda's Dotfiles
+
+These are shitty configs please don't use them for your own sake.

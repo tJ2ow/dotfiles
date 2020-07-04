@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+alias em="emacs -nw"
+alias feh="devour feh"
+alias ll='ls -alH'
+alias la='ls -aLH'
+alias l="ls -lH"
+alias cls="clear"
+alias config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias vrc='vim $HOME/.vimrc'
+alias zrc='vim $HOME/.config/zsh/.zshrc'
+alias awrc='vim $HOME/.config/awesome/rc.lua'
+alias alrc='vim $HOME/.config/alacritty/alacritty.yml'
+alias aliasrc='vim $HOME/.config/aliasrc'
+alias cdgo='cd $GOPATH'

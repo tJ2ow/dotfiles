@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: rce
+# uuid: rce          
+# --
+import React, { Component } from 'react';
+
+class ${1:Component Name} extends Component {
+        render = () => (
+            <React.Fragment>
+
+            </React.Fragment>
+        )
+}
+
+export default $1
