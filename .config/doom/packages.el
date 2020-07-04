@@ -7,4 +7,3 @@
 ;; (package! builtin-package :disable t)
 (package! prettier-js)
 (package! emmet-mode)
-(package! symon)

@@ -109,10 +109,15 @@
   (interactive)
   (exwm/run-program "pavucontrol"))
 
+(defun takoda/screen-lock ()
+  (interactive)
+  (exwm/run-program "slock"))
+
 ;; Keys
 (global-set-key (kbd "M-s-b") 'takoda/launch-browser)
 (global-set-key (kbd "M-s-g") 'takoda/launch-games)
 (map! "M-s-p" #'takoda/launch-pa-control)
+(map! "C-M-x" #'takoda/screen-lock)
 
 ;; xrandr for proper resolutions
 (require 'exwm-randr)

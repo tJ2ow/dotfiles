@@ -38,7 +38,7 @@
 (use-package emmet-mode
   :hook (mhtml-mode . emmet-mode) ;; when you load a html file emmet will load with it
   :config
-  (map! :i "C-h" #'emmet-expand-line)) ;; this will make emmet do its thing.
+  (map! :ie "C-h" #'emmet-expand-line)) ;; this will make emmet do its thing.
 
 (use-package doom-snippets
   :load-path "~/.config/doom/snippets"
@@ -53,14 +53,14 @@
       :n "'" #'org-edit-src-exit
       :n "=" #'org-edit-src-abort)
 
-(map! :prefix ((concat takoda/leader-key "p ") . "password")
+(map! :prefix ("SPC z" . "password")
  :n "c" #'password-store-copy ;; Copy password to clipboard
  :n "e" #'password-store-edit ;; Edit Password in emacs
  :n "i" #'password-store-insert ;; create password for existing account.
  :n "g" #'password-store-generate ;; Generates random encrypted password!
  :n "R" #'password-store-remove ;; NOTE This will delete your password USE WITH CAUTION!
  :n "C" #'password-store-clear) ;; Clear the copied password from the kill-ring(clipboard).
-(map! :prefix ((concat doom-leader-alt-key " z p ") . "password")
+(map! :prefix ((concat doom-leader-alt-key " z ") . "password")
  :ie "c" #'password-store-copy ;; Copy password to clipboard
  :ie "e" #'password-store-edit ;; Edit Password in emacs
  :ie "i" #'password-store-insert ;; create password for existing account.
@@ -68,18 +68,11 @@
  :ie "R" #'password-store-remove ;; NOTE This will delete your password USE WITH CAUTION!
  :ie "C" #'password-store-clear) ;; Clear the copied password from the kill-ring(clipboard).
 
-(map! "s-RET" #'ansi-term)
+(map! "M-RET" #'ansi-term)
 
 (defvar my-term-shell "/bin/zsh")
 (defadvice ansi-term (before force-bash)
   (interactive (list my-term-shell)))
 (ad-activate 'ansi-term)
 
-(map! :prefix takoda/leader-key
- :n "TAB" #'eshell)
-
 (setq avy-all-windows-alt 't)
-
-(symon-mode)
-(map! :prefix takoda/leader-key
- :n "s" #'symon-mode)
