@@ -3,7 +3,7 @@
 (require 'exwm)
 
 ;; Set the initial number of workspaces (they can also be created later).
-(setq exwm-workspace-number 4)
+(setq exwm-workspace-number 10)
 
 ;; All buffers created in EXWM mode are named "*EXWM*". You may want to
 ;; change it in `exwm-update-class-hook' and `exwm-update-title-hook', which
@@ -109,7 +109,7 @@
   (interactive)
   (exwm/run-program "pavucontrol"))
 
-(defun takoda/screen-lock ()
+(defun takoda/scr-lock ()
   (interactive)
   (exwm/run-program "slock"))
 
@@ -117,7 +117,7 @@
 (global-set-key (kbd "M-s-b") 'takoda/launch-browser)
 (global-set-key (kbd "M-s-g") 'takoda/launch-games)
 (map! "M-s-p" #'takoda/launch-pa-control)
-(map! "C-M-x" #'takoda/screen-lock)
+(global-set-key (kbd "s-C-x") 'takoda/scr-lock)
 
 ;; xrandr for proper resolutions
 (require 'exwm-randr)
@@ -129,4 +129,4 @@
 (exwm-randr-enable)
 
 ;; autorun script
-(exwm/run-program "/home/takoda/.local/bin/autorun")
+(exwm/run-program "~/.local/bin/autorun")

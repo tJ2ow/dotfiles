@@ -167,7 +167,8 @@
        ;;(rss +org)        ; emacs as an RSS reader
        emms              ; emacs as a music player for reasons beyond me
        exwm
-       youtube-dl
+       ;;youtube-dl
+       ;;wttrin
        twitter           ; twitter client https://twitter.com/vnought
        ;;write             ; emacs for writers (fiction, notes, papers, etc.)
 

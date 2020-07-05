@@ -4,10 +4,10 @@
 
 ;; Each path is relative to `+mu4e-mu4e-mail-path', which is ~/.mail by default
 (set-email-account! "tjhorton04@gmail.com"
-  '((mu4e-sent-folder       . "/tjhorton04@gmail.com/Sent Mail")
-    (mu4e-drafts-folder     . "/tjhorton04@gmail.com/Drafts")
-    (mu4e-trash-folder      . "/tjhorton04@gmail.com/Trash")
-    (mu4e-refile-folder     . "/tjhorton04@gmail.com/All Mail")
+  '((mu4e-sent-folder       . "/Sent")
+    (mu4e-drafts-folder     . "/Drafts")
+    (mu4e-trash-folder      . "/Trash")
+    (mu4e-refile-folder     . "/All Mail")
     (smtpmail-smtp-user     . "tjhorton04@gmail.com")
     (mu4e-compose-signature . "---\nTakoda Horton"))
   t)
@@ -68,7 +68,7 @@
  :ie "R" #'password-store-remove ;; NOTE This will delete your password USE WITH CAUTION!
  :ie "C" #'password-store-clear) ;; Clear the copied password from the kill-ring(clipboard).
 
-(map! "M-RET" #'ansi-term)
+(map! :g "s-M-x" #'ansi-term)
 
 (defvar my-term-shell "/bin/zsh")
 (defadvice ansi-term (before force-bash)
@@ -76,3 +76,18 @@
 (ad-activate 'ansi-term)
 
 (setq avy-all-windows-alt 't)
+
+;; I have my "default" parameters from Gmail
+(setq mu4e-sent-folder "/home/takoda/.mail/gmail/sent"
+      ;; mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
+      mu4e-drafts-folder "/home/takoda/.mail/gmail/drafts"
+      user-mail-address "tjhorton04@gmail.com"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s")
+
+(map! :prefix "SPC / "
+      :nv "d" #'engine/search-duckduckgo)
