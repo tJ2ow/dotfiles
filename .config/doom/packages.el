@@ -6,6 +6,7 @@
 ;; (package! another-package :recipe (:host github :repo "username/repo"))
 ;; (package! builtin-package :disable t)
 (package! emmet-mode)
+(package! exwm)
 (package! engine-mode)
 (package! prettier-js)
 (package! symon)
