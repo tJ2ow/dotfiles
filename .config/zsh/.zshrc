@@ -11,10 +11,6 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE=~/.cache/zsh/history
 
-# PATHS
-export GOPATH=$HOME/.local/share/go
-export PATH=$HOME/.emacs.d/bin:$PATH
-
 # Basic auto/tab complete:
 autoload -U compinit
 zstyle ':completion:*' menu select

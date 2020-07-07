@@ -128,5 +128,5 @@
              "xrandr" nil "xrandr --output HDMI-A-0 --mode 1360x768 --pos 0x0 --rotate normal ")))
 (exwm-randr-enable)
 
-;; autorun script
-(exwm/run-program "~/.local/bin/autorun")
+;; autorun programs
+(exwm/run-program "gis-weather")

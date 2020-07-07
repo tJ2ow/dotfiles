@@ -1,0 +1,200 @@
+#+TITLE: Takoda's Config for Doom Emacs
+#+STARTUP: overview
+
+* Installation
+Doom emacs can be installed from [[https://github.com/hlissner/doom-emacs][this link.]] This config can be installed via
+#+BEGIN_SRC bash
+mv ~/.doom.d ~/.doom.d.bak
+git clone https://github.com/tj2ow/dotfiles ~/Downloads/dotfiles
+mv ~/Downloads/dotfiles/.config/doom ~/.config/doom
+#+END_SRC
+Install mpd, mpc, pass, mu, isync, xclip
+* User Info
+NOTE This information about me change this to your info please.
+#+BEGIN_SRC elisp
+(setq user-full-name "Takoda J Horton")
+(setq user-mail-address "tjhorton04@gmail.com")
+#+END_SRC
+* Ui
+These are rather simple changes to the UI, and self-explanitory. Symon is the one that I go back and forth on wether or not to keep.
+** theme
+#+BEGIN_SRC elisp
+(setq doom-theme 'doom-dracula)
+#+END_SRC
+** font
+#+BEGIN_SRC elisp
+(setq doom-font (font-spec :family "Source Code Pro" :size 15))
+#+END_SRC
+** clock
+#+BEGIN_SRC elisp
+(display-time-mode 1)
+#+END_SRC
+** relative line numbers
+#+BEGIN_SRC elisp
+(setq display-line-numbers-type 'relative)
+#+END_SRC
+** Symon
+#+BEGIN_SRC elisp
+(use-package symon
+  :init (symon-mode)
+  :config
+  (map! :n "Z s" #'symon-mode))
+#+END_SRC
+* Lang
+** javascript
+Enable the javascript module in your doom! block for this to work correctly.
+Install node.js, npm, and npx
+#+BEGIN_SRC bash
+sudo pacman -S node npm
+npm i -g typescript
+npm i -g prettier
+#+END_SRC
+
+#+BEGIN_SRC elisp
+(use-package prettier-js
+  :hook (js2-mode . prettier-js-mode)
+  :config
+  (setq prettier-js-args '(
+                           "--trailing-comma" "all"
+                           "--bracket-spacing" "true")))
+#+END_SRC
+** html
+#+BEGIN_SRC elisp
+(use-package emmet-mode
+  :hook (mhtml-mode . emmet-mode) ;; when you load a html file emmet will load with it
+  :config
+  (map! :ie "C-h" #'emmet-expand-line)) ;; this will make emmet do its thing.
+#+END_SRC
+* Snippets
+Enable :editor snippets module in your doom! block for this to work.
+#+BEGIN_SRC elisp
+(use-package doom-snippets
+  :load-path "~/.config/doom/snippets"
+  :after yasnippet)
+#+END_SRC
+* Org
+** hl-todo hook
+#+BEGIN_SRC elisp
+(add-hook! org-mode 'hl-todo-mode)
+#+END_SRC
+** org-src QOL changes
+Make org-src-editing much better
+#+BEGIN_SRC elisp
+(setq org-src-ask-before-returning-to-edit-buffer 'nil)
+
+(map! :map emacs-lisp-mode-map
+      :prefix "Z "
+      :n "'" #'org-edit-src-exit
+      :n "=" #'org-edit-src-abort)
+#+END_SRC
+
+* Password
+Install pass on the system for this to work and module
+#+BEGIN_SRC bash
+sudo pacman -S pass
+#+END_SRC
+** keybinds
+For normal-state
+#+BEGIN_SRC elisp
+(map! :prefix ("SPC z" . "password")
+ :n "c" #'password-store-copy ;; Copy password to clipboard
+ :n "e" #'password-store-edit ;; Edit Password in emacs
+ :n "i" #'password-store-insert ;; create password for existing account.
+ :n "g" #'password-store-generate ;; Generates random encrypted password!
+ :n "R" #'password-store-remove ;; NOTE This will delete your password USE WITH CAUTION!
+ :n "C" #'password-store-clear) ;; Clear the copied password from the kill-ring(clipboard).
+#+END_SRC
+** alt-keybinds
+for insert/emacs-state and for EXWM modes
+#+BEGIN_SRC elisp
+(map! :prefix ((concat doom-leader-alt-key " z ") . "password")
+ :ie "c" #'password-store-copy ;; Copy password to clipboard
+ :ie "e" #'password-store-edit ;; Edit Password in emacs
+ :ie "i" #'password-store-insert ;; create password for existing account.
+ :ie "g" #'password-store-generate ;; Generates random encrypted password!
+ :ie "R" #'password-store-remove ;; NOTE This will delete your password USE WITH CAUTION!
+ :ie "C" #'password-store-clear) ;; Clear the copied password from the kill-ring(clipboard).
+#+END_SRC
+* Term
+** key
+#+BEGIN_SRC elisp
+(map! "s-M-x" #'ansi-term)
+#+END_SRC
+** QOL
+Stops asking for shell in ansi-term
+#+BEGIN_SRC elisp
+(defvar my-term-shell "/bin/zsh")
+(defadvice ansi-term (before force-bash)
+  (interactive (list my-term-shell)))
+(ad-activate 'ansi-term)
+#+END_SRC
+* Avy
+** QOL
+All windows are effected by avy.
+#+BEGIN_SRC elisp
+(setq avy-all-windows-alt 't)
+#+END_SRC
+* Mu4e
+Enable mu4e module. [[file:~/.emacs.d/modules/email/mu4e/README.org][Instrucions for setting mu4e up.]]
+** Main gmail account
+*** IMAP
+For reciving Email
+#+BEGIN_SRC elisp
+;; Each path is relative to `+mu4e-mu4e-mail-path', which is ~/.mail by default
+(set-email-account! "tjhorton04@gmail.com"
+  '((mu4e-sent-folder       . "/Sent")
+    (mu4e-drafts-folder     . "/Drafts")
+    (mu4e-trash-folder      . "/Trash")
+    (mu4e-refile-folder     . "/All Mail")
+    (smtpmail-smtp-user     . "tjhorton04@gmail.com")
+    (mu4e-compose-signature . "---\nTakoda Horton"))
+  t)
+
+#+END_SRC
+*** SMTP
+For Sending Mail
+#+BEGIN_SRC elisp
+;; I have my "default" parameters from Gmail
+(setq mu4e-sent-folder "/home/takoda/.mail/gmail/Sent"
+      ;; mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
+      mu4e-drafts-folder "/home/takoda/.mail/gmail/Drafts"
+      user-mail-address "tjhorton04@gmail.com"
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587)
+#+END_SRC
+
+* Engine-mode
+Hightlight something and search for it.
+** duckduckgo
+Enter visual-state then press =SPC / d= to search duckduckgo for it.
+#+BEGIN_SRC elisp
+(defengine duckduckgo
+  "https://duckduckgo.com/?q=%s")
+(map! :prefix "SPC / "
+      :nv "d" #'engine/search-duckduckgo)
+#+END_SRC
+* RSS Feed
+Need to learn/use this more
+#+BEGIN_SRC elisp
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(elfeed-feeds
+   (quote
+    ("https://www.archlinux.org/feeds/packages/x86_64/"))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+#+END_SRC
+
+* Calendar
+Enable the calander module.
+#+BEGIN_SRC elisp
+(map! :n "SPC o c" #'calendar)
+#+END_SRC
