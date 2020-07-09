@@ -254,6 +254,77 @@ Enable the calander module.
 ;; `exwm-mode-map'.  The following example shortens 'C-c q' to 'C-q'.
 (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
 
+
+;; You can hide the minibuffer and echo area when they're not used, by
+;; uncommenting the following line.
+;(setq exwm-workspace-minibuffer-position 'bottom)
+
+;; Do not forget to enable EXWM. It will start by itself when things are
+;; ready.  You can put it _anywhere_ in your configuration.
+(exwm-enable)
+#+END_SRC
+** Programs
+Use this way to make keybinds I know it's annoying, but it works
+#+BEGIN_SRC elisp
+(defun exwm/run-program (name)
+  (interactive)
+  (start-process name nil name))
+
+(defun takoda/launch-browser ()
+  (interactive)
+  (exwm/run-program "firefox"))
+
+(defun takoda/launch-games ()
+  (interactive)
+  (exwm/run-program "lutris"))
+
+(defun takoda/launch-pa-control ()
+  (interactive)
+  (exwm/run-program "pavucontrol"))
+
+(defun takoda/scr-lock ()
+  (interactive)
+  (exwm/run-program "slock"))
+
+(defun takoda/launch-tor-browser ()
+  (interactive)
+  (exwm/run-program "tor-browser"))
+#+END_SRC
+** Keybinds
+Either key-map system works just pick one.
+M = ALT, s = Windows key.
+#+BEGIN_SRC elisp
+(global-set-key (kbd "M-s-b") 'takoda/launch-browser)
+(global-set-key (kbd "M-s-g") 'takoda/launch-games)
+(map! "M-s-p" #'takoda/launch-pa-control)
+(global-set-key (kbd "s-C-x") 'takoda/scr-lock)
+(map! "M-s-t" #'takoda/launch-tor-browser)
+#+END_SRC
+*** FIXME exwm
+#+BEGIN_SRC elisp
+
+#+END_SRC
+** System Tray
+#+BEGIN_SRC elisp
+(require 'exwm-systemtray)
+(exwm-systemtray-enable)
+#+END_SRC
+** Make exwm usable in doom
+in programs this will make it emacs-state and all emacs-state keys will work. Use M-SPC instead of SPC for doom keys.
+#+BEGIN_SRC elisp
+(push ?\M-\  exwm-input-prefix-keys)
+(evil-set-initial-state 'exwm-mode 'emacs)
+(setq persp-init-frame-behaviour nil)
+#+END_SRC
+*** exwm-mode keys
+Moving =C-c KEY= to =M-SPC m KEY= for evil users.
+#+BEGIN_SRC elisp
+(map! :prefix doom-localleader-alt-key
+      :e "f" #'exwm-layout-set-fullscreen
+      :e "RET" #'exwm-workspace-move-window
+      :e "t RET" #'exwm-layout-toggle-mode-line
+      :e "t f" #'exwm-floating-toggle-floating)
+
 ;; The following example demonstrates how to use simulation keys to mimic
 ;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
 ;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
@@ -279,69 +350,6 @@ Enable the calander module.
         ([?\M-p] . [?\C-v])
         ;; search
         ([?\C-s] . [?\C-f])))
-
-;; You can hide the minibuffer and echo area when they're not used, by
-;; uncommenting the following line.
-;(setq exwm-workspace-minibuffer-position 'bottom)
-
-;; Do not forget to enable EXWM. It will start by itself when things are
-;; ready.  You can put it _anywhere_ in your configuration.
-(exwm-enable)
-
-
-#+END_SRC
-** Programs
-Use this way to make keybinds I know it's annoying, but it works
-#+BEGIN_SRC elisp
-(defun exwm/run-program (name)
-  (interactive)
-  (start-process name nil name))
-
-(defun takoda/launch-browser ()
-  (interactive)
-  (exwm/run-program "firefox"))
-
-(defun takoda/launch-games ()
-  (interactive)
-  (exwm/run-program "lutris"))
-
-(defun takoda/launch-pa-control ()
-  (interactive)
-  (exwm/run-program "pavucontrol"))
-
-(defun takoda/scr-lock ()
-  (interactive)
-  (exwm/run-program "slock"))
-#+END_SRC
-** Keybinds
-Either key-map system works just pick one.
-M = ALT, s = Windows key.
-#+BEGIN_SRC elisp
-(global-set-key (kbd "M-s-b") 'takoda/launch-browser)
-(global-set-key (kbd "M-s-g") 'takoda/launch-games)
-(map! "M-s-p" #'takoda/launch-pa-control)
-(global-set-key (kbd "s-C-x") 'takoda/scr-lock)
-#+END_SRC
-** System Tray
-#+BEGIN_SRC elisp
-(require 'exwm-systemtray)
-(exwm-systemtray-enable)
-#+END_SRC
-** Make exwm usable in doom
-in programs this will make it emacs-state and all emacs-state keys will work. Use M-SPC instead of SPC for doom keys.
-#+BEGIN_SRC elisp
-(push ?\M-\  exwm-input-prefix-keys)
-(evil-set-initial-state 'exwm-mode 'emacs)
-(setq persp-init-frame-behaviour nil)
-#+END_SRC
-*** exwm-mode keys
-Moving =C-c KEY= to =M-SPC m KEY= for evil users.
-#+BEGIN_SRC elisp
-(map! :prefix doom-localleader-alt-key
-      :e "f" #'exwm-layout-set-fullscreen
-      :e "RET" #'exwm-workspace-move-window
-      :e "t RET" #'exwm-layout-toggle-mode-line
-      :e "t f" #'exwm-floating-toggle-floating)
 #+END_SRC
 ** autorun programs
 use the exwm/run-program func to here to autostart programs

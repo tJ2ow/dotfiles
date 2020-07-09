@@ -157,31 +157,6 @@
 ;; `exwm-mode-map'.  The following example shortens 'C-c q' to 'C-q'.
 (define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
 
-;; The following example demonstrates how to use simulation keys to mimic
-;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
-;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
-;; and DEST is what EXWM actually sends to application.  Note that both SRC
-;; and DEST should be key sequences (vector or string).
-(setq exwm-input-simulation-keys
-      '(
-        ;; movement
-        ([?\C-h] . [left])
-        ([?\M-b] . [C-left])
-        ([?\C-l] . [right])
-        ([?\M-f] . [C-right])
-        ([?\C-k] . [up])
-        ([?\C-j] . [down])
-        ([?\C-0] . [home])
-        ([?\C-$] . [end])
-        ([?\M-v] . [prior])
-        ([?\C-v] . [next])
-        ([?\C-d] . [delete])
-        ;; cut/paste.
-        ([?\M-d] . [?\C-x])
-        ([?\M-y] . [?\C-c])
-        ([?\M-p] . [?\C-v])
-        ;; search
-        ([?\C-s] . [?\C-f])))
 
 ;; You can hide the minibuffer and echo area when they're not used, by
 ;; uncommenting the following line.
@@ -211,10 +186,15 @@
   (interactive)
   (exwm/run-program "slock"))
 
+(defun takoda/launch-tor-browser ()
+  (interactive)
+  (exwm/run-program "tor-browser"))
+
 (global-set-key (kbd "M-s-b") 'takoda/launch-browser)
 (global-set-key (kbd "M-s-g") 'takoda/launch-games)
 (map! "M-s-p" #'takoda/launch-pa-control)
 (global-set-key (kbd "s-C-x") 'takoda/scr-lock)
+(map! "M-s-t" #'takoda/launch-tor-browser)
 
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
@@ -228,6 +208,32 @@
       :e "RET" #'exwm-workspace-move-window
       :e "t RET" #'exwm-layout-toggle-mode-line
       :e "t f" #'exwm-floating-toggle-floating)
+
+;; The following example demonstrates how to use simulation keys to mimic
+;; the behavior of Emacs.  The value of `exwm-input-simulation-keys` is a
+;; list of cons cells (SRC . DEST), where SRC is the key sequence you press
+;; and DEST is what EXWM actually sends to application.  Note that both SRC
+;; and DEST should be key sequences (vector or string).
+(setq exwm-input-simulation-keys
+      '(
+        ;; movement
+        ([?\C-h] . [left])
+        ([?\M-b] . [C-left])
+        ([?\C-l] . [right])
+        ([?\M-f] . [C-right])
+        ([?\C-k] . [up])
+        ([?\C-j] . [down])
+        ([?\C-0] . [home])
+        ([?\C-$] . [end])
+        ([?\M-v] . [prior])
+        ([?\C-v] . [next])
+        ([?\C-d] . [delete])
+        ;; cut/paste.
+        ([?\M-d] . [?\C-x])
+        ([?\M-y] . [?\C-c])
+        ([?\M-p] . [?\C-v])
+        ;; search
+        ([?\C-s] . [?\C-f])))
 
 (exwm/run-program "gis-weather")
 ;;(exwm/run-program "another-program")
