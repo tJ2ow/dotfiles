@@ -19,7 +19,7 @@ NOTE This information about me change this to your info please.
 These are rather simple changes to the UI, and self-explanitory. Symon is the one that I go back and forth on wether or not to keep.
 ** theme
 #+BEGIN_SRC elisp
-(setq doom-theme 'doom-material)
+(setq doom-theme 'doom-solarized-dark)
 #+END_SRC
 ** font
 #+BEGIN_SRC elisp
@@ -164,16 +164,6 @@ For Sending Mail
       smtpmail-smtp-service 587)
 #+END_SRC
 
-* Engine-mode
-Hightlight something and search for it.
-** duckduckgo
-Enter visual-state then press =SPC / d= to search duckduckgo for it.
-#+BEGIN_SRC elisp
-(defengine duckduckgo
-  "https://duckduckgo.com/?q=%s")
-(map! :prefix "SPC / "
-      :nv "d" #'engine/search-duckduckgo)
-#+END_SRC
 * RSS Feed
 Need to learn/use this more
 #+BEGIN_SRC elisp
@@ -244,7 +234,7 @@ Enable the calander module.
                              (interactive)
                              (exwm-workspace-switch-create ,i))))
 
-    ;; the simplest launcher, I keep it in only if dmenu eventually stopped working or something
+    ;; the simplest launcher.
     (exwm-input-set-key (kbd "s-&")
                         (lambda (command)
                           (interactive (list (read-shell-command "$ ")))
@@ -349,7 +339,7 @@ Moving =C-c KEY= to =M-SPC m KEY= for evil users.
         ([?\M-y] . [?\C-c])
         ([?\M-p] . [?\C-v])
         ;; search
-        ([?\C-s] . [?\C-f])))
+        ([?\C-/] . [?\C-f])))
 #+END_SRC
 ** autorun programs
 use the exwm/run-program func to here to autostart programs

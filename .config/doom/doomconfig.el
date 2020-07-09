@@ -83,11 +83,6 @@
       smtpmail-smtp-server "smtp.gmail.com"
       smtpmail-smtp-service 587)
 
-(defengine duckduckgo
-  "https://duckduckgo.com/?q=%s")
-(map! :prefix "SPC / "
-      :nv "d" #'engine/search-duckduckgo)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -147,7 +142,7 @@
                              (interactive)
                              (exwm-workspace-switch-create ,i))))
 
-    ;; the simplest launcher, I keep it in only if dmenu eventually stopped working or something
+    ;; the simplest launcher.
     (exwm-input-set-key (kbd "s-&")
                         (lambda (command)
                           (interactive (list (read-shell-command "$ ")))
@@ -196,6 +191,8 @@
 (global-set-key (kbd "s-C-x") 'takoda/scr-lock)
 (map! "M-s-t" #'takoda/launch-tor-browser)
 
+
+
 (require 'exwm-systemtray)
 (exwm-systemtray-enable)
 
@@ -233,7 +230,7 @@
         ([?\M-y] . [?\C-c])
         ([?\M-p] . [?\C-v])
         ;; search
-        ([?\C-s] . [?\C-f])))
+        ([?\C-/] . [?\C-f])))
 
 (exwm/run-program "gis-weather")
 ;;(exwm/run-program "another-program")
