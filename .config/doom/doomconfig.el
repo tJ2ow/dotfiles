@@ -1,11 +1,13 @@
 (setq user-full-name "Takoda J Horton")
 (setq user-mail-address "tjhorton04@gmail.com")
 
-(setq doom-theme 'doom-material)
+(setq doom-theme 'doom-solarized-dark)
 
 (setq doom-font (font-spec :family "Source Code Pro" :size 15))
 
 (display-time-mode 1)
+(setq display-time-24hr-format t)
+(setq display-time-format "%H:%M - %d %B %Y")
 
 (setq display-line-numbers-type 'relative)
 
@@ -64,7 +66,6 @@
 
 (setq avy-all-windows-alt 't)
 
-;; Each path is relative to `+mu4e-mu4e-mail-path', which is ~/.mail by default
 (set-email-account! "tjhorton04@gmail.com"
   '((mu4e-sent-folder       . "/Sent")
     (mu4e-drafts-folder     . "/Drafts")
@@ -74,7 +75,6 @@
     (mu4e-compose-signature . "---\nTakoda Horton"))
   t)
 
-;; I have my "default" parameters from Gmail
 (setq mu4e-sent-folder "/home/takoda/.mail/gmail/Sent"
       ;; mu4e-sent-messages-behavior 'delete ;; Unsure how this should be configured
       mu4e-drafts-folder "/home/takoda/.mail/gmail/Drafts"
@@ -150,7 +150,7 @@
 
 ;; To add a key binding only available in line-mode, simply define it in
 ;; `exwm-mode-map'.  The following example shortens 'C-c q' to 'C-q'.
-(define-key exwm-mode-map [?\C-q] #'exwm-input-send-next-key)
+(define-key exwm-mode-map [?\M-q] #'exwm-input-send-next-key)
 
 
 ;; You can hide the minibuffer and echo area when they're not used, by
@@ -185,11 +185,16 @@
   (interactive)
   (exwm/run-program "tor-browser"))
 
+(defun takoda/launch-term ()
+  (interactive)
+  (exwm/run-program "alacritty"))
+
 (global-set-key (kbd "M-s-b") 'takoda/launch-browser)
 (global-set-key (kbd "M-s-g") 'takoda/launch-games)
 (map! "M-s-p" #'takoda/launch-pa-control)
 (global-set-key (kbd "s-C-x") 'takoda/scr-lock)
 (map! "M-s-t" #'takoda/launch-tor-browser)
+(map! "s-x" #'takoda/launch-term)
 
 
 
@@ -242,3 +247,62 @@
             (start-process-shell-command
              "xrandr" nil "xrandr --output HDMI-A-0 --mode 1360x768 --pos 0x0 --rotate normal ")))
 (exwm-randr-enable)
+
+(use-package emms
+  :init
+  (require 'emms-setup)
+  (require 'emms-player-mpd)
+  (setq emms-seek-seconds 5)
+  (setq emms-player-list '(emms-player-mpd))
+  (setq emms-info-functions '(emms-info-mpd))
+  (setq emms-player-mpd-server-name "localhost")
+  (setq emms-player-mpd-server-port "8501")
+  :config
+  (emms-all))
+
+
+  ;; Keys that make sense regardless of whether or not your in emms.
+  (map! :prefix ("SPC e" . "emms")
+        :n "p" #'emms-playlist-new
+        :n "b" #'emms-smart-browse
+        :n "r" #'emms-player-mpd-update-all-reset-cache
+        :n "c" #'mpd/start-music-daemon
+        :n "k" #'mpd/kill-music-daemon
+        :n "u" #'mpc/update-database)
+  (map! :prefix ((concat doom-leader-alt-key " e ") . "emms")
+        :ie "p" #'emms-playlist-new
+        :ie "b" #'emms-smart-browse
+        :ie "r" #'emms-player-mpd-update-all-reset-cache
+        :ie "c" #'mpd/start-music-daemon
+        :ie "k" #'mpd/kill-music-daemon
+        :ie "u" #'mpc/update-database)
+
+  ;; Keybinds for emms that only make sense to use in an emms buffer.
+  (map! :map emms-playlist-mode-map
+        :localleader
+	:n "l" #'emms-toggle-repeat-playlist
+        :n "i" #'emms-insert-playlist
+        :n "t" #'emms-toggle-repeat-track
+        :n "s" #'emms-playlist-save
+        :n "m" #'emms-shuffle)
+
+(setq mpc-host "localhost:8501")
+
+  (defun mpd/start-music-daemon ()
+    (interactive)
+    (shell-command "mpd")
+    (mpc/update-database)
+    (emms-player-mpd-connect)
+    (emms-cache-set-from-mpd-all)
+    (message "MPD Started!"))
+
+  (defun mpd/kill-music-daemon ()
+    (interactive)
+    (emms-stop)
+    (call-process "killall" nil nil nil "mpd")
+    (message "MPD Killed!"))
+
+  (defun mpc/update-database ()
+    (interactive)
+    (call-process "mpc" nil nil nil "update")
+    (message "MPD Database Updated!"))

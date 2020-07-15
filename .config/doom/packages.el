@@ -9,3 +9,4 @@
 (package! exwm)
 (package! prettier-js)
 (package! symon)
+(package! emms)
